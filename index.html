@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - Perpustakaan Digital Modern</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-card: #273548;
+            --primary: #10b981;
+            --primary-hover: #059669;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --accent-glow: rgba(16, 185, 129, 0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { 
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Modern */
+        header { 
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: var(--text-main);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+        }
+
+        .nav-left { display: flex; gap: 24px; align-items: center; }
+        .nav-left h1 { font-size: 20px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .nav-left h1 i { color: var(--primary); }
+        .nav-left a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .nav-left a:hover, .nav-left a.active { color: var(--primary); }
+
+        .profile-dropdown-container { position: relative; display: inline-block; }
+        .profile-btn {
+            display: flex; align-items: center; gap: 12px; cursor: pointer;
+            background: rgba(255, 255, 255, 0.05); padding: 6px 14px; border-radius: 30px;
+            transition: 0.3s; border: 1px solid var(--border-color);
+        }
+        .profile-btn img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+        .profile-btn span { font-size: 14px; font-weight: 600; color: var(--text-main); }
+
+        .dropdown-content {
+            display: none; position: absolute; right: 0; top: 55px;
+            background: var(--bg-surface); min-width: 220px; box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border-radius: 12px; z-index: 99; border: 1px solid var(--border-color); overflow: hidden;
+        }
+        .dropdown-content.show { display: block; }
+        .dropdown-header { padding: 18px; text-align: center; background: rgba(15, 23, 42, 0.4); border-bottom: 1px solid var(--border-color); }
+        .dropdown-header img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 8px; }
+        .dropdown-header h4 { font-size: 14px; color: #fff; font-weight: 600; }
+        .dropdown-header p { font-size: 12px; color: var(--text-muted); }
+        
+        .dropdown-menu-links { padding: 8px 0; }
+        .dropdown-menu-links a {
+            display: flex; align-items: center; gap: 10px; padding: 10px 18px;
+            color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 500; transition: 0.2s;
+        }
+        .dropdown-menu-links a:hover { background: rgba(16, 185, 129, 0.1); color: var(--primary); }
+        .dropdown-menu-links a.logout-link { color: #f87171; border-top: 1px solid var(--border-color); margin-top: 5px; }
+
+        .btn-login-nav {
+            background: var(--primary); color: white; padding: 8px 20px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.3s;
+        }
+        .btn-login-nav:hover { background: var(--primary-hover); }
+
+        /* Container Utama dengan Posisi Baru yang Lebih Lapang */
+        .container { max-width: 1300px; margin: 30px auto; padding: 0 20px; width: 100%; display: flex; flex-direction: column; gap: 25px; }
+        
+        /* Baris Atas: Pencarian & Kategori Filter Horizontal (Posisi Baru) */
+        .top-dashboard-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: var(--bg-surface);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-bar form { display: flex; gap: 12px; width: 100%; }
+        .search-bar input { 
+            flex: 1; padding: 14px 20px; border: 1px solid var(--border-color); 
+            border-radius: 12px; outline: none; background: var(--bg-main); 
+            font-size: 14px; color: var(--text-main); 
+            transition: 0.3s;
+        }
+        .search-bar input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .search-bar button { 
+            padding: 0 24px; background: var(--primary); color: white; border: none; 
+            border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .search-bar button:hover { background: var(--primary-hover); }
+
+        /* Kategori berbentuk Badge Pills Horizontal di Bagian Atas */
+        .kategori-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: thin;
+        }
+        .kategori-scroll::-webkit-scrollbar { height: 6px; }
+        .kategori-scroll::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        
+        .kat-pill {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+        .kat-pill:hover, .kat-pill.active-kat {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Grid Buku */
+        .grid-buku { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+        
+        .card-buku { 
+            background: var(--bg-surface); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            transition: 0.3s; 
+            border: 1px solid var(--border-color); 
+            position: relative; 
+        }
+        .card-buku:hover { 
+            transform: translateY(-6px); 
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.1); 
+        }
+        
+        .btn-wishlist { 
+            position: absolute; top: 12px; right: 12px; 
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
+            border: 1px solid var(--border-color); width: 36px; height: 36px; 
+            border-radius: 50%; display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; z-index: 5; transition: 0.2s;
+        }
+        .btn-wishlist i { font-size: 16px; color: var(--text-muted); }
+        .btn-wishlist:hover i { color: #f87171; }
+        .btn-wishlist.active i { color: #ef4444; }
+
+        .card-buku img { width: 100%; height: 260px; object-fit: cover; }
+        .card-body { padding: 16px; }
+        .card-body h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-body p { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+        
+        .badge { display: inline-block; background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 4px 10px; font-size: 11px; border-radius: 6px; font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.2); }
+        
+        .card-footer { 
+            padding: 14px 16px; 
+            background: rgba(15, 23, 42, 0.3); 
+            border-top: 1px solid var(--border-color); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        /* Tombol Baca Buku (Menggantikan Pinjam) */
+        .btn-baca { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            font-size: 12px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: 0.2s; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-baca:hover { background: var(--primary-hover); transform: scale(1.03); }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; }
+            .nav-left h1 { font-size: 16px; }
+            .nav-left a span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-left">
+        <h1><i class="fa-solid fa-book-bookmark"></i> Sofyan's Library</h1>
+        <a href="index.php" class="active"><i class="fa-solid fa-house"></i> <span>Beranda</span></a>
+        <a href="koleksi.php"><i class="fa-solid fa-bookmark"></i> <span>Koleksi Saya</span></a>
+        <a href="riwayat.php"><i class="fa-solid fa-clock-rotate-left"></i> <span>Riwayat</span></a>
+    </div>
+    
+    <div class="profile-dropdown-container">
+        <div class="profile-btn" onclick="toggleDropdown(event)">
+            <img src="WhatsApp Image 2026-09-27 at 8.57.09 PM.jpeg">
+            <span>Muhammad Sofyant</span>
+            <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: var(--text-muted);"></i>
+        </div>
+        <div id="profileDropdown" class="dropdown-content">
+            <div class="dropdown-header">
+                <img src="WhatsApp Image 2026-09-27 at 8.57.09 PM.jpeg">
+                <h4>m.sfyn_</h4>
+                <p>psofyant@gmail.com</p>
+            </div>
+            <div class="dropdown-menu-links">
+                <a href="profil.php"><i class="fa-solid fa-user-gear"></i> Edit Profil</a>
+                <a href="login.php?logout=true" class="logout-link" onclick="return confirm('Keluar akun?')"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Bagian Atas: Pencarian & Filter Kategori Horizontal -->
+    <div class="top-dashboard-section">
+        <div class="search-bar">
+            <form action="" method="GET">
+                <input type="text" name="cari" placeholder="Cari judul buku, penulis, atau topik bacaan...">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
+            </form>
+        </div>
+        
+        <div class="kategori-scroll">
+            <a href="index.php" class="kat-pill active-kat">Semua Buku</a>
+            <a href="#" class="kat-pill">Fiksi & Novel</a>
+            <a href="#" class="kat-pill">Teknologi & AI</a>
+            <a href="#" class="kat-pill">Pengembangan Diri</a>
+            <a href="#" class="kat-pill">Sains & Alam</a>
+            <a href="#" class="kat-pill">Bisnis & Ekonomi</a>
+            <a href="#" class="kat-pill">Sejarah & Budaya</a>
+            <a href="#" class="kat-pill">Filsafat</a>
+        </div>
+    </div>
+
+    <!-- Grid Katalog Buku -->
+    <div class="grid-buku">
+        <!-- Buku 1 -->
+        <div class="card-buku">
+            <button class="btn-wishlist active" onclick="toggleWishlist(this)" title="Simpan ke Koleksi">
+                <i class="fa-solid fa-heart"></i>
+            </button>
+            <div>
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=500&q=80" alt="Sampul Buku">
+                <div class="card-body">
+                    <h3>Atomic Habits</h3>
+                    <p>Oleh James Clear</p>
+                    <span class="badge">Pengembangan Diri</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span style="font-size: 11px; color: var(--primary); font-weight: 600;"><i class="fa-solid fa-bolt"></i> Siap Dibaca</span>
+                <a href="baca.php?id=1" class="btn-baca"><i class="fa-solid fa-book-open-reader"></i> Baca Buku</a>
+            </div>
+        </div>
+
+        <!-- Buku 2 -->
+        <div class="card-buku">
+            <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Simpan ke Koleksi">
+                <i class="fa-solid fa-heart"></i>
+            </button>
+            <div>
+                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=500&q=80" alt="Sampul Buku">
+                <div class="card-body">
+                    <h3>The Psychology of Money</h3>
+                    <p>Oleh Morgan Housel</p>
+                    <span class="badge">Bisnis & Ekonomi</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span style="font-size: 11px; color: var(--primary); font-weight: 600;"><i class="fa-solid fa-bolt"></i> Siap Dibaca</span>
+                <a href="baca.php?id=2" class="btn-baca"><i class="fa-solid fa-book-open-reader"></i> Baca Buku</a>
+            </div>
+        </div>
+
+        <!-- Buku 3 -->
+        <div class="card-buku">
+            <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Simpan ke Koleksi">
+                <i class="fa-solid fa-heart"></i>
+            </button>
+            <div>
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=80" alt="Sampul Buku">
+                <div class="card-body">
+                    <h3>Clean Code Handbook</h3>
+                    <p>Oleh Robert C. Martin</p>
+                    <span class="badge">Teknologi & AI</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span style="font-size: 11px; color: var(--primary); font-weight: 600;"><i class="fa-solid fa-bolt"></i> Siap Dibaca</span>
+                <a href="baca.php?id=3" class="btn-baca"><i class="fa-solid fa-book-open-reader"></i> Baca Buku</a>
+            </div>
+        </div>
+
+        <!-- Buku 4 -->
+        <div class="card-buku">
+            <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Simpan ke Koleksi">
+                <i class="fa-solid fa-heart"></i>
+            </button>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=500&q=80" alt="Sampul Buku">
+                <div class="card-body">
+                    <h3>Sapiens: Riwayat Singkat Umat Manusia</h3>
+                    <p>Oleh Yuval Noah Harari</p>
+                    <span class="badge">Sejarah & Budaya</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span style="font-size: 11px; color: var(--primary); font-weight: 600;"><i class="fa-solid fa-bolt"></i> Siap Dibaca</span>
+                <a href="baca.php?id=4" class="btn-baca"><i class="fa-solid fa-book-open-reader"></i> Baca Buku</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDropdown(event) {
+        event.stopPropagation();
+        document.getElementById("profileDropdown").classList.toggle("show");
+    }
+    
+    window.onclick = function(event) {
+        if (!event.target.closest('.profile-dropdown-container')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                dropdowns.item(i).classList.remove('show');
+            }
+        }
+    }
+
+    function toggleWishlist(btn) {
+        btn.classList.toggle('active');
+    }
+</script>
+</body>
+</html>
